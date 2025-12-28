@@ -16,12 +16,6 @@ COPY . .
 ENV PKG_CONFIG_ALLOW_CROSS=1
 RUN cargo build --release --target x86_64-unknown-linux-musl
 
-# 4. Build your actual application
-COPY ./src ./src
-# We 'touch' the main file to ensure cargo realizes the source has changed
-RUN touch src/main.rs
-RUN cargo build --release --target x86_64-unknown-linux-musl
-
 # --- Stage 2: The Runtime ---
 # We use Alpine here instead of Scratch because it's only ~5MB 
 # and provides CA certificates for HTTPS and a shell for debugging.
@@ -30,5 +24,9 @@ FROM scratch
 # Copy the binary from the builder
 COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/matrirc /usr/local/bin/matrirc
 
+if [ "$ALLOW_REGISTER" = "true" ]; then
+  $REGISTER="--allow-register"
+fi
+
 # Run the app
-CMD ["/usr/local/bin/matrirc"]
+CMD ["/usr/local/bin/matrirc $REGISTER"]
