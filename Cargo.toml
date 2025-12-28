@@ -11,6 +11,7 @@ readme = "README.md"
 rust-version = "1.76" # MSRV
 
 [dependencies]
+openssl = { version = "0.10", features = ["vendored"] }
 anyhow = "1.0"
 argon2 = { version = "0.5", features = ["std"] }
 async-trait = "0.1.68"
@@ -26,7 +27,7 @@ irc = "1.0"
 lazy_static = "1.4"
 log = "0.4"
 lru = "0.13"
-matrix-sdk = { version = "0.8", features = ["anyhow", "sso-login"] }
+matrix-sdk = { version = "0.8", features = ["anyhow", "sso-login", "sqlite", "bundled-sqlite"] }
 percent-encoding = "2.3.1"
 rand_core = { version = "0.9", features = ["os_rng"] }
 regex = "1.8"
@@ -35,3 +36,4 @@ serde_json = "1.0"
 tempfile = "3.19.1"
 tokio = { version = "1.0.0", features = ["full"] }
 tokio-util = { version = "0.7", features = ["codec"] }
+
